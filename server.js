@@ -30,6 +30,21 @@ app.use(globalLimiter);
 
 app.get("/api/health", (req, res) => res.json({ status: "ok", service: "azaratti-backend" }));
 
+app.get("/", (req, res) => {
+  res.json({
+    message: "Bienvenue sur le backend AzaRatti 1of1",
+    documentation: "/api/health",
+    endpoints: {
+      auth: "/api/auth",
+      products: "/api/products",
+      orders: "/api/orders",
+      customRequest: "/api/custom-request",
+      contact: "/api/contact",
+      likes: "/api/likes"
+    }
+  });
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productsRoutes);
 app.use("/api/orders", ordersRoutes);
