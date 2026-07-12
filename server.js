@@ -2,6 +2,8 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
+import path from "path";
+import { fileURLToPath } from "url";
 import { connectDB } from "./src/config/db.js";
 import { globalLimiter } from "./src/middleware/rateLimit.middleware.js";
 import { notFound, errorHandler } from "./src/middleware/errorHandler.js";
@@ -14,9 +16,15 @@ import customRoutes from "./src/routes/custom.routes.js";
 import contactRoutes from "./src/routes/contact.routes.js";
 import likesRoutes from "./src/routes/likes.routes.js";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
 app.use(helmet());
 app.use(express.json({ limit: "1mb" }));
+
+// ✅ SERVIRE LES IMAGES STATIQUES
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
 const allowedOrigins = [process.env.FRONTEND_URL, "http://localhost:5173"].filter(Boolean);
 app.use(cors({ origin: allowedOrigins, credentials: true }));
